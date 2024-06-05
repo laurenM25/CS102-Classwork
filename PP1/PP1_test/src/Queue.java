@@ -1,7 +1,7 @@
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
-//import java.util.Arrays;
+import java.util.Arrays;
 import java.util.Random;
 
 public class Queue {
@@ -37,6 +37,7 @@ public class Queue {
 		return fullText; // return the full text
 	}
 
+	//create list
 	public static SinglyLinkedList<String[]> oneLineList(String line) {
 
 		// make String array, splitting at semicolon
@@ -73,7 +74,7 @@ public class Queue {
 
 	} // end of OneLineList method
 
-	// keeping track of A's B's and C's
+	// keeping track of repeats of A's B's and C's
 	public static boolean isRepeat(int[] count) {
 		for (int l : count) {
 			if (l > 1)
@@ -82,27 +83,40 @@ public class Queue {
 		return false;
 	}
 
-	// now we want to see which processes can run in same cycle
+	// determine which processes can run in same cycle
 	public static int countCycles(SinglyLinkedList<String[]> list) {
 		int counter = 1;
-		String[] cur = list.removeFirst(); // element of first node
+		String[] curElem = list.removeFirst(); // element(s) of first node
 		int[] tracker = { 0, 0, 0 }; // use ONE array to track elements
 
 		do {
-			String[] next = list.removeFirst(); // element of second node
+			String[] nextElem = list.removeFirst(); // element of second node
+
+			//FOR DEBUGGING
+			//String curElements = Arrays.toString(curElem);
+			//String nextElements = Arrays.toString(nextElem);
+			//System.out.println("comparing " + curElements + " & " + nextElements);
 
 			// compare current.resources to next.resources
 			// do a counter array to track A's B's and C's
 
-			for (String e : cur) {// track each element of FIRST program
-				if (e.equals("A"))
-					tracker[0]++;
-				else if (e.equals("B"))
-					tracker[1]++;
-				else if (e.equals("C"))
-					tracker[2]++;
+			boolean Empty = true; //see if tracker has been reset
+			for(int i = 0; i<tracker.length; i++){
+				if(tracker[i] != 0){
+					Empty = false;
+				}
 			}
-			for (String e : next) {// track each element of SECOND program
+			if(Empty == true){ //need to recount after reset
+				for (String e : curElem) {// track each element of FIRST program
+					if (e.equals("A"))
+						tracker[0]++;
+					else if (e.equals("B"))
+						tracker[1]++;
+					else if (e.equals("C"))
+						tracker[2]++;
+				}
+			}
+			for (String e : nextElem) {// track each element of SECOND program
 				if (e.equals("A"))
 					tracker[0]++;
 				else if (e.equals("B"))
@@ -113,11 +127,11 @@ public class Queue {
 
 			// if counter > 1 for any resource, run only current (not next)
 			if (isRepeat(tracker)) {
-				counter++; // add a cycle for repeat
+				counter++; // add a cycle for repeat       
 				tracker = new int[] { 0, 0, 0 }; // reset tracker (otherwise, wanna use same tracker bc in same cycle)
 			}
 			// set new current (walk over to next one)
-			cur = next;
+			curElem = nextElem;
 
 		} while (!list.isEmpty());
 
@@ -181,13 +195,21 @@ public class Queue {
 			// compare current.resources to next.resources
 			// do a counter array to track A's B's and C's
 
-			for (String e : cur) {// track each element of FIRST program
-				if (e.equals("A"))
-					tracker[0]++;
-				else if (e.equals("B"))
-					tracker[1]++;
-				else if (e.equals("C"))
-					tracker[2]++;
+			boolean Empty = true; //see if tracker has been reset
+			for(int i = 0; i<tracker.length; i++){
+				if(tracker[i] != 0){
+					Empty = false;
+				}
+			}
+			if(Empty == true){ //need to recount after reset
+				for (String e : cur) {// track each element of FIRST program
+					if (e.equals("A"))
+						tracker[0]++;
+					else if (e.equals("B"))
+						tracker[1]++;
+					else if (e.equals("C"))
+						tracker[2]++;
+				}
 			}
 			for (String e : next) {// track each element of SECOND program
 				if (e.equals("A"))
@@ -221,6 +243,13 @@ public class Queue {
 			// add resources (String array) using list.addLast
 			list.addLast(objRes);
 		}
+
+		//DEBUGGING - print initial list by removing first 20 elements
+		//for(int i = 0; i < 20; i++){
+		//	String[] elementsN = list.removeFirst();
+		//	System.out.println(Arrays.toString(elementsN));
+		//}
+
 
 		for (int c = 1; c <= 10; c++) {
 			list = modifiedList(list); // modify List eACH CYCLE, for 100 cycles
