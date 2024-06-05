@@ -1,11 +1,12 @@
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws CloneNotSupportedException {
 		NYUFaculty chair = new NYUFaculty("name", "id");
 		NYUMajor major = new NYUMajor("major", chair, 128);
-		NYUTranscript transcript = new NYUTranscript();
-		NYUFaculty advisor = new NYUFaculty();
+		String[] courses = { "course 1", "course 2" };
+		NYUTranscript transcript = new NYUTranscript(32, courses);
+		NYUFaculty advisor = new NYUFaculty("Advisory", "adID23");
 		NYUPlan program = new NYUPlan();
 
 		NYUStudent student = new NYUStudent("Joyce", "N21905");
@@ -15,17 +16,25 @@ public class Main {
 		student.setProgram(program);
 
 		// Create a clone2
-		NYUStudent student2 = student.clone();
+		NYUStudent student2 = student.clone(); //this gives UNATTACHED transcript
 
-		// give clone new properties //REMEMBER DISCUSSION W/ PROF -- DEEP CLONE, GOTTA
-		// CREATE CLONE METHOD IN TRANSCRIPT CLASS
-		// YEAHHH FIX IT WE JUST WANNA MAKE THE TWO STUDENTS SEPARATEEEEE (so not using
-		// set methods rn, not the point)
-		String[] courses = { "course 1", "course 2" };
-		NYUTranscript transcript2 = new NYUTranscript(32, courses);
-		student2.setTranscript(transcript2);
+		//REMEMBER DEEP CLONE
+		// (created clone method in Transcript class)
+		NYUTranscript transcript2 = student2.getTranscript();
+		NYUTranscript transcript1 = student.getTranscript();
+
+		// give clone new properties 
 		student2.setName("Bob");
 		student2.setSID("b21958");
+		transcript2.addCourse("course 3", 4);
+
+		// print out to see changes
+		System.out.println(student.toString());
+		System.out.println(transcript1.toString());
+
+		System.out.println(student2.toString());
+		System.out.println(transcript2.toString());
 
 	}
+
 }
