@@ -184,16 +184,29 @@ public class Queue {
 	}
 
 	// modify list each cycle
-	public static SinglyLinkedList<String[]> modifiedList(SinglyLinkedList<String[]> list) {
-		int cycles = 1;
+	public static SinglyLinkedList<String[]> modifiedList(SinglyLinkedList<String[]> list) throws CloneNotSupportedException{
+		
+
+		// print out original list
+		//DebugPartB(list);
+
 		String[] cur = list.removeFirst(); // element of first node
 		int[] tracker = { 0, 0, 0 }; // use ONE array to track elements
-
+		boolean repeat = true;
+		
 		do {
-			String[] next = list.removeFirst(); // element of second node
+			String[] next = list.first(); // element of second node
 
 			// compare current.resources to next.resources
 			// do a counter array to track A's B's and C's
+
+			/*
+			curr = p1 = [A]
+			next = p2 = [B]
+
+			curr = p2 = [B]
+			next = p3 = [A]
+			*/
 
 			boolean Empty = true; //see if tracker has been reset
 			for(int i = 0; i<tracker.length; i++){
@@ -220,22 +233,42 @@ public class Queue {
 					tracker[2]++;
 			}
 
+			repeat = isRepeat(tracker);
+
 			// if counter > 1 for any resource, run only current (not next)
-			if (isRepeat(tracker)) {
-				cycles++; // add a cycle for repeat
-				tracker = new int[] { 0, 0, 0 }; // reset tracker (otherwise, wanna use same tracker bc in same cycle)
+			if (repeat) {
 				list.addLast(randResources());// add 2 processes
 				list.addLast(randResources());
+				break;
 			}
 			// set new current (walk over to next one)
+			list.removeFirst();
 			cur = next;
-		} while (cycles < 100);
+
+		} while (!repeat);
+
+		//FOR DEBUGGING
+		//System.out.println("completed cycle: ");
+		//System.out.println("size after: " + list.size());
+		//DebugPartB(list);
+
 
 		return list;
 
 	}
+	//DEBUG
+	public static void DebugPartB(SinglyLinkedList<String[]> list) throws CloneNotSupportedException{
+		int size = list.size();
+		//duplicate list so can run without affecting
+		SinglyLinkedList<String[]> copy = list.clone();
+		for(int i = 0; i < size; i++){
+			String[] elementsN = copy.removeFirst();
+			System.out.println("P" + (i+1) + ": " + Arrays.toString(elementsN));
+		}
 
-	public static void GenerateProcesses() { // print out statements
+	}
+
+	public static void GenerateProcesses() throws CloneNotSupportedException{ // print out statements
 		// initial 20 processes
 		SinglyLinkedList<String[]> list = new SinglyLinkedList<String[]>();
 		for (int i = 0; i < 20; i++) {
@@ -244,29 +277,27 @@ public class Queue {
 			list.addLast(objRes);
 		}
 
-		//DEBUGGING - print initial list by removing first 20 elements
-		//for(int i = 0; i < 20; i++){
-		//	String[] elementsN = list.removeFirst();
-		//	System.out.println(Arrays.toString(elementsN));
-		//}
+		int checkIn = 1;
+		int repsPerCheck = 1;
+		for (; checkIn <= 100 ; checkIn++) {
 
-
-		for (int c = 1; c <= 10; c++) {
-			list = modifiedList(list); // modify List eACH CYCLE, for 100 cycles
+			for(int i = 0; i < repsPerCheck; i++){
+				list = modifiedList(list); // modify List eACH CYCLE
+			}
 			int length = list.size(); // count PROGRAMS after 100 cycles
 
 			// report processes left (length of list)
-			System.out.println("Length of processes at cycle " + (c * 100) + ": " + length + "\n");
+			System.out.println("Length of processes at cycle " + (checkIn*repsPerCheck) + ": " + length + "\n");
 
 			// report final
-			if (c == 10) {
+			if (checkIn == 10) {
 				System.out.println("We have a total of " + length + " left.");
 			}
 		}
 
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws CloneNotSupportedException{
 
 		// A
 		String filePath = getFilePath();
