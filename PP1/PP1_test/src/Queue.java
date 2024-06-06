@@ -277,20 +277,20 @@ public class Queue {
 			list.addLast(objRes);
 		}
 
-		int checkIn = 1;
-		int repsPerCheck = 1;
-		for (; checkIn <= 100 ; checkIn++) {
+		int group = 1;
+		int cyclesPerGroup = 100;
+		for (; group <= 10 ; group++) {
 
-			for(int i = 0; i < repsPerCheck; i++){
+			for(int i = 0; i < cyclesPerGroup; i++){
 				list = modifiedList(list); // modify List eACH CYCLE
 			}
 			int length = list.size(); // count PROGRAMS after 100 cycles
 
 			// report processes left (length of list)
-			System.out.println("Length of processes at cycle " + (checkIn*repsPerCheck) + ": " + length + "\n");
+			System.out.println("Length of processes at cycle " + (group*cyclesPerGroup) + ": " + length + "\n");
 
 			// report final
-			if (checkIn == 10) {
+			if (group == 10) {
 				System.out.println("We have a total of " + length + " left.");
 			}
 		}
