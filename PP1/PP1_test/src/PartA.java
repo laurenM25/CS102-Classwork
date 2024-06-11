@@ -23,9 +23,9 @@ public class PartA {
 				String line = scn.nextLine();
 				fullText += line + "\n"; // nextLine() removes line breaks, add back in
 			}
-			scn.close(); // be nice and close the Scanner
+			scn.close(); // close the Scanner
 		} catch (FileNotFoundException e) {
-			// in case we fail to open the file, output a friendly message.
+			// in case we fail to open the file, output a message.
 			System.out.println("Oh no... can't find the file!");
 		}
 		return fullText; // return the full text
@@ -47,7 +47,7 @@ public class PartA {
 					start = j + 1;
 				}
 				if (processes[i].charAt(j) == ')') {
-					end = j; // substring is exclusive with end
+					end = j; // substring is exclusive at end
 				}
 			}
 			String resString = processes[i].substring(start, end);
@@ -125,5 +125,23 @@ public class PartA {
 		} while (!list.isEmpty());
 
 		return counter;
+	}
+
+    public static void main(String[] args) {
+
+        //get file information
+		String filePath = PartA.getFilePath();
+		String file = PartA.getContentsOfFile(filePath);
+		String[] lines = file.split("\n");
+
+		// make list for EACH LINE of file
+		for (int i = 0; i < lines.length; i++) {
+			SinglyLinkedList<String[]> list = PartA.oneLineList(lines[i]);
+
+			// calculate/print cycles required
+			int cycles = PartA.countCycles(list);
+			System.out.println(lines[i]); // print out line
+			System.out.println("Total required cycles: " + cycles + "\n");
+		}
 	}
 }

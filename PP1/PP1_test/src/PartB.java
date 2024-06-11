@@ -18,14 +18,14 @@ public class PartB {
 	public static boolean isRepeat(int[] count) {
 		for (int l : count) {
 			if (l > 1)
-				return true; // there is a repeat
+				return true; 
 		}
 		return false;
 	}
 
 	public static boolean containsLetter(String l, String[] array) {
 		for (String r : array) {
-			if (r == null) // empty (completely)
+			if (r == null) // empty array
 				return false;
 			else if (r.equals(l))
 				return true; // contains duplicate
@@ -44,10 +44,10 @@ public class PartB {
 		for (int i = 0; i < reStrings.length; i++) {
 			do {
 				abc = randABC(); // assign a random resource
-				isValid = !containsLetter(abc, reStrings); // CHECK BEFORE ADD
+				isValid = !containsLetter(abc, reStrings); // check if valid
 
 				if (isValid) {
-					reStrings[i] = abc; // add letter to Str[]
+					reStrings[i] = abc; // add letter to String[]
 				}
 
 			} while (!isValid);
@@ -56,7 +56,7 @@ public class PartB {
 		return reStrings; // return String[]
 	}
 
-	// method completes when cycle finishes
+	// note: this method completes when the cycle finishes
 	public static SinglyLinkedList<String[]> modifiedList(SinglyLinkedList<String[]> list) {
 		
 
@@ -96,7 +96,7 @@ public class PartB {
 
 			repeat = isRepeat(tracker);
 
-			// if counter > 1 for any resource, run only current (not next)
+			// if counter > 1 for any resource, complete cycle
 			if (repeat) {
 				list.addLast(randResources());// add 2 processes
 				list.addLast(randResources());
@@ -112,7 +112,6 @@ public class PartB {
 		return list;
 
 	}
-	
 
 	public static void GenerateProcesses() { // print out statements
 		// initial 20 processes
@@ -124,13 +123,14 @@ public class PartB {
 		}
 
 		int group = 1;
-		int cyclesPerGroup = 100;
+		int cyclesPerGroup = 100; 
+
 		for (; group <= 10 ; group++) {
 
 			for(int i = 0; i < cyclesPerGroup; i++){
-				list = modifiedList(list); // modify List eACH CYCLE
+				list = modifiedList(list); // modify List EACH CYCLE
 			}
-			int length = list.size(); // count PROGRAMS after 100 cycles
+			int length = list.size(); // count programs left after 100 cycles
 
 			// report processes left (length of list)
 			System.out.println("Length of processes at cycle " + (group*cyclesPerGroup) + ": " + length + "\n");
@@ -141,5 +141,10 @@ public class PartB {
 			}
 		}
 
+	}
+
+    public static void main(String[] args) {
+
+		PartB.GenerateProcesses();
 	}
 }
