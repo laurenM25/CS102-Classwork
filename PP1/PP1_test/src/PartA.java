@@ -1,35 +1,7 @@
 import java.util.Scanner;
-import java.io.File;
-import java.io.FileNotFoundException;
 
 public class PartA {
     public static Scanner scn = new Scanner(System.in);
-
-    public static String getFilePath() {
-		System.out.println("What file would you like to open: ");
-		String fpath = scn.nextLine();
-
-		return fpath;
-	}
-
-	public static String getContentsOfFile(String fpath) {
-
-		String fullText = "";
-		// opening up a file may fail if the file is not there...
-		try {
-			// try to open the file and extract its contents
-			Scanner scn = new Scanner(new File(fpath));
-			while (scn.hasNextLine()) {
-				String line = scn.nextLine();
-				fullText += line + "\n"; // nextLine() removes line breaks, add back in
-			}
-			scn.close(); // close the Scanner
-		} catch (FileNotFoundException e) {
-			// in case we fail to open the file, output a message.
-			System.out.println("Oh no... can't find the file!");
-		}
-		return fullText; // return the full text
-	}
 
 	//create list
 	public static SinglyLinkedList<String[]> oneLineList(String line) {
@@ -127,21 +99,17 @@ public class PartA {
 		return counter;
 	}
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { //reading from console, not file
 
-        //get file information
-		String filePath = PartA.getFilePath();
-		String file = PartA.getContentsOfFile(filePath);
-		String[] lines = file.split("\n");
+        System.out.println("Input the processes you want to run: ");
+        String line = scn.nextLine();
 
-		// make list for EACH LINE of file
-		for (int i = 0; i < lines.length; i++) {
-			SinglyLinkedList<String[]> list = PartA.oneLineList(lines[i]);
+		// make list the line
+		SinglyLinkedList<String[]> list = PartA.oneLineList(line);
 
-			// calculate/print cycles required
-			int cycles = PartA.countCycles(list);
-			System.out.println(lines[i]); // print out line
-			System.out.println("Total required cycles: " + cycles + "\n");
-		}
+		// calculate/print cycles required
+		int cycles = PartA.countCycles(list);
+		System.out.println("Total required cycles: " + cycles + "\n");
+		
 	}
 }
