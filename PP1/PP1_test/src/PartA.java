@@ -1,9 +1,9 @@
 import java.util.Scanner;
 
 public class PartA {
-    public static Scanner scn = new Scanner(System.in);
+	public static Scanner scn = new Scanner(System.in);
 
-	//create list
+	// create list
 	public static SinglyLinkedList<String[]> oneLineList(String line) {
 
 		// make String array, splitting at semicolon
@@ -38,7 +38,7 @@ public class PartA {
 
 		return list;
 
-	} 
+	}
 
 	// keeping track of repeats of A's B's and C's
 	public static boolean isRepeat(int[] count) {
@@ -61,13 +61,13 @@ public class PartA {
 			// compare curElem resources to nextElem resources
 			// do a counter array to track A's B's and C's
 
-			boolean Empty = true; //see if tracker has been reset
-			for(int i = 0; i<tracker.length; i++){
-				if(tracker[i] != 0){
+			boolean Empty = true; // see if tracker has been reset
+			for (int i = 0; i < tracker.length; i++) {
+				if (tracker[i] != 0) {
 					Empty = false;
 				}
 			}
-			if(Empty == true){ //need to recount after reset
+			if (Empty == true) { // need to recount after reset
 				for (String e : curElem) {// track each element of FIRST program
 					if (e.equals("A"))
 						tracker[0]++;
@@ -88,7 +88,7 @@ public class PartA {
 
 			// if counter > 1 for any resource, start new cycle
 			if (isRepeat(tracker)) {
-				counter++;     
+				counter++;
 				tracker = new int[] { 0, 0, 0 }; // reset tracker
 			}
 			// set new current (walk over to next one)
@@ -99,10 +99,10 @@ public class PartA {
 		return counter;
 	}
 
-    public static void main(String[] args) { //reading from console, not file
+	public static void main(String[] args) { // reading from console, not file
 
-        System.out.println("Input the processes you want to run: ");
-        String line = scn.nextLine();
+		System.out.println("Input the processes you want to run: ");
+		String line = scn.nextLine();
 
 		// make list the line
 		SinglyLinkedList<String[]> list = PartA.oneLineList(line);
@@ -110,6 +110,6 @@ public class PartA {
 		// calculate/print cycles required
 		int cycles = PartA.countCycles(list);
 		System.out.println("Total required cycles: " + cycles + "\n");
-		
+
 	}
 }
